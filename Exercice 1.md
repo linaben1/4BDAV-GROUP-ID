@@ -18,46 +18,6 @@ Table CLI :
     Nat VARCHAR2(30) NOT NULL );
     ('Wang', 'France', 0667805563, 'Lyon', 'Auvergne', 'Ch');
 
-On rajoute quelques lignes :
-
-    INSERT INTO CLI (NomCli, Pays, Tel, Ville, Dept, Nat ) VALUES
-    ('Coutant', 'France', 0749961843, 'Lyon', 'Auvergne', 'Fr');
-    
-    INSERT INTO CLI (NomCli, Pays, Tel, Ville, Dept, Nat ) VALUES
-    ('Benabid', 'France', 0767536781, 'Lyon', 'Auvergne', 'Dz');
-    
-    INSERT INTO CLI (NomCli, Pays, Tel, Ville, Dept, Nat ) VALUES
-    ('Wang', 'France', 0667805563, 'Lyon', 'Auvergne', 'Ch');
-
-Et on les affiche :
-
-    SQL> SELECT * FROM CLI;
-
-        NUMCLI NOMCLI			  PAYS
-    ---------- ------------------------------ ------------------------------
-           TEL VILLE			  DEPT
-    ---------- ------------------------------ ------------------------------
-    NAT
-    ------------------------------
-             1 Coutant			  France
-     749961843 Lyon 			  Auvergne
-    Fr
-
-             2 Benabid			  France
-     767536781 Lyon 			  Auvergne
-    Dz
-
-        NUMCLI NOMCLI			  PAYS
-    ---------- ------------------------------ ------------------------------
-           TEL VILLE			  DEPT
-    ---------- ------------------------------ ------------------------------
-    NAT
-    ------------------------------
-
-             3 Wang 			  France
-     667805563 Lyon 			  Auvergne
-    Ch
-
 Table COM :
 
     CREATE TABLE COM (
@@ -106,7 +66,7 @@ Il y a bel et bien un ordre à respecter qui est :
 * COM
 * FOU
 * PRO
-* NET
+* DET
 
 Cet ordre est nécessaire pour les références, en effet pour créer une clé étrangère provenant d'une autre table il faut faire référence à celle-ci, et si elle n'existe pas on ne peut pas la cibler.
 
@@ -134,14 +94,14 @@ Cet ordre est nécessaire pour les références, en effet pour créer une clé �
     DATECOM				                   DATE
     PAYEMENT				  NOT NULL VARCHAR2(30)
 
-    SQL> desc DET
+    SQL> desc FOU
     Name					   Null?    Type
     ----------------------------------------- -------- ----------------------------
-    NUMCOM 					           NUMBER
-    NUMPRO 					           NUMBER
-    QTE					  NOT NULL NUMBER
-    REMISE 				          NOT NULL NUMBER(3)
-
+    NUMFOU 				          NOT NULL NUMBER
+    NOMFOU 				          NOT NULL VARCHAR2(30)
+    PAYS					  NOT NULL VARCHAR2(30)
+    TEL					  NOT NULL NUMBER(10)
+    
     SQL> desc PRO
     Name					   Null?    Type
     ----------------------------------------- -------- ----------------------------
@@ -150,11 +110,98 @@ Cet ordre est nécessaire pour les références, en effet pour créer une clé �
     NOMPRO 				          NOT NULL VARCHAR2(30)
     TYPEPRO				          NOT NULL VARCHAR2(30)
     PRIXUNIT				  NOT NULL NUMBER
-
-    SQL> desc FOU
+    
+    SQL> desc DET
     Name					   Null?    Type
     ----------------------------------------- -------- ----------------------------
-    NUMFOU 				          NOT NULL NUMBER
-    NOMFOU 				          NOT NULL VARCHAR2(30)
-    PAYS					  NOT NULL VARCHAR2(30)
-    TEL					  NOT NULL NUMBER(10)
+    NUMCOM 					           NUMBER
+    NUMPRO 					           NUMBER
+    QTE					  NOT NULL NUMBER
+    REMISE 				          NOT NULL NUMBER(3)
+
+On rajoute 1 ligne dans chaque table dans l'ordre de création :
+
+    SQL> INSERT INTO CLI (NomCli, Pays, Tel, Ville, Dept, Nat ) VALUES
+    ('User', 'France', 0707070707, 'Lyon', 'Auvergne', 'Fr');
+    
+    1 Row created.
+    
+    SQL> INSERT INTO COM (NUMCLI, FRAISPORT, DATECOM, PAYEMENT) VALUES
+    (1, 50, SYSDATE, 'CARTE');
+    
+    1 Row created.
+    
+    SQL> INSERT INTO FOU (NOMFOU, PAYS, TEL) VALUES
+    ('Amazon', 'France', 0800847715);
+    
+    1 Row created.
+    
+    SQL> INSERT INTO PRO (NUMFOU, NOMPRO, TYPEPRO, PRIXUNIT) VALUES
+    (1, 'POCO F3', 'Smartphone', 350);
+    
+    1 Row created.
+    
+    SQL> INSERT INTO DET (NUMCOM, NUMPRO, QTE, REMISE) VALUES
+    (1, 1, 1, 12.5);
+    
+    1 Row created.
+
+Et on les affiche :
+
+    SQL> SELECT * FROM CLI;
+
+        NUMCLI NOMCLI			  PAYS
+    ---------- ------------------------------ ------------------------------
+           TEL VILLE			  DEPT
+    ---------- ------------------------------ ------------------------------
+    NAT
+    ------------------------------
+             1 User			  France
+     707070707 Lyon 			  Auvergne
+    Fr
+    
+    SQL> SELECT * FROM COM;
+    
+        NUMCOM     NUMCLI  FRAISPORT DATECOM   PAYEMENT
+    ---------- ---------- ---------- --------- ------------------------------
+             1	    1	      50 31-MAY-22 Carte
+    
+    SQL> SELECT * FROM FOU;
+    
+        NUMFOU NOMFOU			  PAYS
+    ---------- ------------------------------ ------------------------------
+           TEL
+    ----------
+             1 Amazon			  France
+     800847715
+    
+    SQL> SELECT * FROM PRO;
+    
+        NUMPRO     NUMFOU NOMPRO
+    ---------- ---------- ------------------------------
+    TYPEPRO 			 PRIXUNIT
+    ------------------------------ ----------
+             1	    1 POCO F3
+    Smartphone			      350
+    
+    SQL> SELECT * FROM DET;
+    
+        NUMCOM     NUMPRO	     QTE     REMISE
+    ---------- ---------- ---------- ----------
+             1	    1	       1	 13
+    
+## Question 5
+    
+### Vider toutes vos tables. Y a-t-il un ordre à respecter ? Si oui, pourquoi ?
+    
+Il y a effectivement un ordre à respecter qui est l'inverse de l'ordre de création des tables :
+
+* DET
+* PRO
+* FOU
+* COM
+* CLI
+    
+La raison est la même qu'à la question 3.
+
+Pour supprimer le contenu des tables on utilise la commande "TRUNCATE TABLE nomTable;".
