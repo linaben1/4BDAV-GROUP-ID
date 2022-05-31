@@ -1,2 +1,5 @@
 # 4BDAV-GROUP-GROUP2
-### Test
+
+### Première étape : La VM
+
+La première chose qui a été faite est la configuration de la VM.
