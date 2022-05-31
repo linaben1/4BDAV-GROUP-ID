@@ -1,6 +1,8 @@
+# Création du schéma
+
 ## Question 2
 
-### Créer les relations de la base ci-dessus (avec toutes les clés primaires et étrangères).
+### Créer les relations de la base ci-dessus.
 
 -Création des différentes tables :
 
@@ -93,3 +95,66 @@ Table DET :
     CONSTRAINT NumPro FOREIGN KEY (NumPro) References PRO(NUMPRO),
     Qte NUMBER NOT NULL,
     Remise NUMBER(3) NOT NULL );
+
+## Question 3
+
+### Y a-t-il un ordre à respecter lors de la création de ces tables, si oui lequel ? Pourquoi ?
+
+Il y a bel et bien un ordre à respecter qui est :
+
+* CLI
+* COM
+* FOU
+* PRO
+* NET
+
+Cet ordre est nécessaire pour les références, en effet pour créer une clé étrangère provenant d'une autre table il faut faire référence à celle-ci, et si elle n'existe pas on ne peut pas la cibler.
+
+## Question 4
+
+### Vérifier vos créations. Sous SQL*plus, utiliser la commande desc <nomtable>. Insérer un jeu de données cohérent dans vos relations (un ou deux tuples par relation).
+    
+    SQL> desc CLI
+    Name					   Null?    Type
+    ----------------------------------------- -------- ----------------------------
+    NUMCLI 				          NOT NULL NUMBER
+    NOMCLI 				          NOT NULL VARCHAR2(30)
+    PAYS					  NOT NULL VARCHAR2(30)
+    TEL					  NOT NULL NUMBER(10)
+    VILLE					  NOT NULL VARCHAR2(30)
+    DEPT					  NOT NULL VARCHAR2(30)
+    NAT					  NOT NULL VARCHAR2(30)
+
+    SQL> desc COM
+    Name					   Null?    Type
+    ----------------------------------------- -------- ----------------------------
+    NUMCOM 				          NOT NULL NUMBER
+    NUMCLI 			                           NUMBER
+    FRAISPORT				  NOT NULL NUMBER
+    DATECOM				                   DATE
+    PAYEMENT				  NOT NULL VARCHAR2(30)
+
+    SQL> desc DET
+    Name					   Null?    Type
+    ----------------------------------------- -------- ----------------------------
+    NUMCOM 					           NUMBER
+    NUMPRO 					           NUMBER
+    QTE					  NOT NULL NUMBER
+    REMISE 				          NOT NULL NUMBER(3)
+
+    SQL> desc PRO
+    Name					   Null?    Type
+    ----------------------------------------- -------- ----------------------------
+    NUMPRO 				          NOT NULL NUMBER
+    NUMFOU 					           NUMBER
+    NOMPRO 				          NOT NULL VARCHAR2(30)
+    TYPEPRO				          NOT NULL VARCHAR2(30)
+    PRIXUNIT				  NOT NULL NUMBER
+
+    SQL> desc FOU
+    Name					   Null?    Type
+    ----------------------------------------- -------- ----------------------------
+    NUMFOU 				          NOT NULL NUMBER
+    NOMFOU 				          NOT NULL VARCHAR2(30)
+    PAYS					  NOT NULL VARCHAR2(30)
+    TEL					  NOT NULL NUMBER(10)
