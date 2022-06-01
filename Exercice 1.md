@@ -16,7 +16,6 @@ Table CLI :
     Ville VARCHAR2(30) NOT NULL,
     Dept VARCHAR2(30) NOT NULL,
     Nat VARCHAR2(30) NOT NULL );
-    ('Wang', 'France', 0667805563, 'Lyon', 'Auvergne', 'Ch');
 
 Table COM :
 
