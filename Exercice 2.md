@@ -1,4 +1,4 @@
-# Exercice 2
+# Se familiariser avec le schéma HR d'Oracle
 
 ## Question 2
 
